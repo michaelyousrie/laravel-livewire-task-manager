@@ -11,7 +11,7 @@ class TaskManager extends Component
     public string $newTask = '';
     public string $newTaskProject = '';
 
-    public string $filterProject = 'all';
+    public string $filterProjectName = 'All Projects';
 
     public Collection $tasks;
     public Collection $projects;
@@ -114,6 +114,11 @@ class TaskManager extends Component
         $this->fetchTasks();
     }
 
+    public function filterTasks()
+    {
+        $this->fetchTasks();
+    }
+
     private function resetForm()
     {
         $this->newTask = '';
@@ -133,7 +138,13 @@ class TaskManager extends Component
 
     private function fetchTasks()
     {
-        $this->tasks = Task::query()->orderBy('priority')->get();
+        $query = Task::query();
+
+        if ($this->filterProjectName !== 'All Projects') {
+            $query->where('project', $this->filterProjectName);
+        }
+
+        $this->tasks = $query->orderBy('priority')->get();
     }
 
     private function validateTask()

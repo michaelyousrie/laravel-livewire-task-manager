@@ -72,7 +72,7 @@
             <h1 class="font-white font-bold text-lg px-4 border-b border-gray-700">Your Task List</h1>
             {{-- Projects Filter --}}
             @if($projects->count())
-            <select class="px-4 bg-gray-700" wire:model='filterProject'>
+            <select class="px-4 bg-gray-700" wire:model='filterProjectName' wire:change='filterTasks'>
                 @foreach($projects as $project)
                     <option value="{{ $project }}">{{ $project }}</option>
                 @endforeach
