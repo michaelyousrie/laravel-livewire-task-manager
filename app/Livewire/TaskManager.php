@@ -73,6 +73,8 @@ class TaskManager extends Component
 
     public function updateTask(int $taskId)
     {
+        $this->resetValidation();
+
         $task = Task::query()->find($taskId);
 
         $this->currentlyUpdatingTask = $taskId;
