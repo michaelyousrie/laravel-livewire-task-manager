@@ -88,6 +88,6 @@ class TaskManager extends Component
 
     private function fetchTasks()
     {
-        $this->tasks = Task::query()->orderBy('priority')->get(['id', 'priority', 'body', 'project', 'is_done', 'created_at']);
+        $this->tasks = Task::query()->orderBy('priority')->get();
     }
 }

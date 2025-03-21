@@ -97,8 +97,13 @@
                     </label>
                     {{-- /Task Body & Project --}}
                     {{-- Task Created At Human Form --}}
-                    <span class="text-xs font-light text-center">{{ $task->created_at->diffForHumans() }}</span>
+                    <span class="text-xs font-light text-center">created {{ $task->created_at->diffForHumans() }}</span>
                     {{-- /Task Created At Human Form --}}
+                    {{-- Task Updated At Human Form --}}
+                    @if($task->is_done)
+                    <span class="text-xs font-light text-center">done {{ $task->updated_at->diffForHumans() }}</span>
+                    @endif
+                    {{-- /Task Updated At Human Form --}}
                     {{-- Task Delete --}}
                     <button class="text-red-500 hover:cursor-pointer" wire:click='deleteTask({{ $task->id }})' wire:confirm='Are you sure you want to delete this task? This action is irreversible'>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
