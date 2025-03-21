@@ -13,7 +13,7 @@
         <h1 class="text-gray-100 font-black text-3xl">Task Manager</h1>
     </header>
 
-    <section class="mt-24">
+    <section class="my-12">
         @livewire('task-manager')
     </section>
 </body>

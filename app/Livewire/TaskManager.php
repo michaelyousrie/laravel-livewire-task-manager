@@ -12,6 +12,7 @@ class TaskManager extends Component
     public string $newTaskProject = '';
 
     public string $filterProjectName = 'All Projects';
+    public string $filterTaskStatus = 'all';
 
     public Collection $tasks;
     public Collection $projects;
@@ -144,13 +145,17 @@ class TaskManager extends Component
             $query->where('project', $this->filterProjectName);
         }
 
+        if ($this->filterTaskStatus !== 'all') {
+            $query->where('is_done', ($this->filterTaskStatus == 'complete' ? true : false));
+        }
+
         $this->tasks = $query->orderBy('priority')->get();
     }
 
     private function validateTask()
     {
         $this->validate([
-            'newTask' => ['required', 'unique:tasks,body'],
+            'newTask' => ['required', 'unique:tasks,body','max:300'],
             'newTaskProject' => ['required'],
         ]);
     }
