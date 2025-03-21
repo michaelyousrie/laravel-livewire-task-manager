@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('body')->unique();
             $table->string('project');
             $table->boolean('is_done')->default(false);
+            $table->timestamp('done_at')->nullable();
             $table->timestamps();
         });
     }
