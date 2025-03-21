@@ -8,7 +8,6 @@ use Illuminate\Support\Collection;
 
 class TaskManager extends Component
 {
-    public ?int $newTaskPriority = null;
     public string $newTask = '';
     public string $newTaskProject = '';
 
@@ -38,11 +37,13 @@ class TaskManager extends Component
 
         $this->validateTask();
 
+        $lowestPriority = Task::query()->orderBy('priority', 'desc')->first('priority')->priority ?? 0;
+
         Task::query()
             ->create([
                 'body'      => $this->newTask,
                 'project'   => $this->newTaskProject,
-                'priority'  => $this->newTaskPriority
+                'priority'  => $lowestPriority + 1
             ]);
 
         $this->resetForm();
@@ -80,7 +81,6 @@ class TaskManager extends Component
         $this->currentlyUpdatingTask = $taskId;
 
         $this->newTask = $task->body;
-        $this->newTaskPriority = $task->priority;
         $this->newTaskProject = $task->project;
     }
 
@@ -91,7 +91,6 @@ class TaskManager extends Component
         $task->update([
             'body' => $this->newTask,
             'project' => $this->newTaskProject,
-            'priority' => $this->newTaskPriority,
         ]);
 
         $this->resetForm();
@@ -106,9 +105,17 @@ class TaskManager extends Component
         $this->currentlyUpdatingTask = null;
     }
 
+    public function updateTaskListPriority($tasks)
+    {
+        foreach($tasks as $task) {
+            Task::query()->find($task['value'])->update(['priority' => $task['order']]);
+        }
+
+        $this->fetchTasks();
+    }
+
     private function resetForm()
     {
-        $this->newTaskPriority = null;
         $this->newTask = '';
         $this->newTaskProject = '';
     }
@@ -134,7 +141,6 @@ class TaskManager extends Component
         $this->validate([
             'newTask' => ['required', 'unique:tasks,body'],
             'newTaskProject' => ['required'],
-            'newTaskPriority' => ['required', 'numeric', 'min:1', 'max:1000', 'unique:tasks,priority']
         ]);
     }
 }

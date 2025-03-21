@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedSmallInteger('priority')->unique();
+            $table->unsignedSmallInteger('priority');
             $table->string('body')->unique();
             $table->string('project');
             $table->boolean('is_done')->default(false);
