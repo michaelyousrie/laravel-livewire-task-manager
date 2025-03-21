@@ -3,6 +3,7 @@
     <div class="flex justify-between items-center w-full pb-4">
         <h1 class="font-white font-bold text-lg px-4 border-b border-gray-700">Your Task List</h1>
         <div class="flex gap-4">
+            @if ($projects->count())
             {{-- Task State Filter --}}
             <select class="px-4 bg-gray-700 border border-gray-500" wire:model='filterTaskStatus' wire:change='filterTasks'>
                 <option value="all">All</option>
@@ -12,14 +13,13 @@
             {{-- /Task State Filter --}}
 
             {{-- Projects Filter --}}
-            @if ($projects->count())
                 <select class="px-4 bg-gray-700 border border-gray-500" wire:model='filterProjectName' wire:change='filterTasks'>
                     @foreach ($projects as $project)
                         <option value="{{ $project }}">{{ $project }}</option>
                     @endforeach
                 </select>
-            @endif
             {{-- /Projects Filter --}}
+            @endif
         </div>
     </div>
     {{-- Task List --}}

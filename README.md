@@ -6,6 +6,7 @@
 5. Start adding tasks.
 # Task Manager in Larave/Livewire
 - This application allows you to create, update, delete tasks as well as mark them as complete/incomplete.
+- You can sort tasks by dragging the hamburger icon on each `li` item in the list.
 - You can also prioritize tasks using drag & drop on the tasks list.
 - Editing the task is done in the same form that is used to create a new task. Reusability is efficient eh? (PS: even the title changes depending on if you're creating or updating a task. I love the attention to small details :D)
 
@@ -16,7 +17,11 @@
 - Editing the priority manually will shift tasks with the same and higher priority than the priority entered by 1.
 
 ### Questions that might come to your head..
-1. Q) Why not make a separate livewire component for the form and list?
-- A) Well, while this might have made things easier, I, above all, follow the `KISS` principle. `Keep It Simple Stupid`. I asked myself `Does the project need that extra layer of complexity?` I found the answer to be `No`.
-2. Q) Why MySQL and not SQLite?
-- A) Project Requirements. For this simple project, I'd have chosen `SQLite`.
+- Why not make a separate livewire component for the form and list?
+    - Well, while this might have made things easier, I, above all, follow the `KISS` principle. `Keep It Simple Stupid`. I asked myself `Does the project need that extra layer of complexity?` I found the answer to be `No`.
+- Why MySQL and not SQLite?
+    - Project Requirements. For this simple project, I'd have chosen `SQLite`.
+- Why is the design ... not great?
+    - Ouch, that hurt my feelings :(. But to be fair, design isn't really my cup of tea.
+---
+If you have any other questions, reach me on michaelyousrie@gmail.com
