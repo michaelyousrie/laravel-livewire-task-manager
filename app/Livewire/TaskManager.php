@@ -23,6 +23,11 @@ class TaskManager extends Component
         $this->fetchTasks();
     }
 
+    public function render()
+    {
+        return view('livewire.task-manager');
+    }
+
     public function addTask()
     {
         $this->validate([
@@ -45,19 +50,22 @@ class TaskManager extends Component
         $this->fetchTasks();
     }
 
-    public function toggleTask()
+    public function toggleTask(int $taskId)
     {
-        // function here
+        $task = Task::query()->find($taskId);
+        $task->update([
+            'is_done' => !$task->is_done
+        ]);
+
+        $this->fetchTasks();
     }
 
-    public function deleteTask()
+    public function deleteTask(int $taskId)
     {
-        // function here
-    }
+        Task::query()->find($taskId)->delete();
 
-    public function render()
-    {
-        return view('livewire.task-manager');
+        $this->fetchProjects();
+        $this->fetchTasks();
     }
 
     private function resetForm()
