@@ -92,7 +92,7 @@
                     </span>
                     {{-- /Task Sort Button --}}
                     {{-- Task ID --}}
-                    <span class="text-xs w-4">#{{ $task->id }}</span>
+                    <span class="text-xs w-4 text-gray-400 text-light">#{{ $task->id }}</span>
                     {{-- /Task ID --}}
                     {{-- Task Body & Project --}}
                     <p class="ml-3 text-gray-200 flex justify-between w-full">
