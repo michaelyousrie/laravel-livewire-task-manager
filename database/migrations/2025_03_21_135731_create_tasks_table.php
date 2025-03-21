@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedSmallInteger('priority');
+            $table->unsignedSmallInteger('priority')->unique();
             $table->string('body')->unique();
-            $table->string('project')->unique();
+            $table->string('project');
             $table->boolean('is_done')->default(false);
             $table->timestamps();
         });

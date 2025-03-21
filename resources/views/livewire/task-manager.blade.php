@@ -1,9 +1,9 @@
 <div>
-    <div class="max-w-md mx-auto bg-gray-700 border border-gray-500 shadow-lg rounded-lg overflow-hidden mt-16 text-gray-200">
+    <div class="w-xl mx-auto bg-gray-700 border border-gray-500 shadow-lg rounded-lg overflow-hidden mt-16 text-gray-200">
     <div class="px-4 py-2">
         <h1 class="font-bold text-lg">What will you work on today?</h1>
     </div>
-    <form class="w-full max-w-sm mx-auto px-4 py-2" wire:submit.prevent='addTask'>
+    <form class="w-full mx-auto px-4 py-2" wire:submit.prevent='addTask'>
         <div class="flex flex-col border border-gray-500 bg-gray-800 rounded-lg p-4 gap-4">
             {{-- Task Name --}}
             <input
@@ -11,8 +11,15 @@
                 type="text"
                 placeholder="Task.."
                 wire:model='newTask'
+                autofocus
+                tabindex="1"
             >
             {{-- /Task Name --}}
+            {{-- Task Name Error --}}
+            @error('newTask')
+            <p class="bg-red-400 text-white p-2 font-bold">{{ $message }}</p>
+            @enderror
+            {{-- /Task Name Error --}}
             <div class="flex gap-4">
                 {{-- Task Project --}}
                 <input
@@ -20,6 +27,7 @@
                     type="text"
                     placeholder="Project.."
                     wire:model='newTaskProject'
+                    tabindex="2"
                 >
                 {{-- /Task Project --}}
                 {{-- Task Priority --}}
@@ -28,9 +36,21 @@
                     type="number"
                     placeholder="Priority.."
                     wire:model='newTaskPriority'
+                    tabindex="3"
+                    min="1"
                 >
                 {{-- /Task Priority --}}
             </div>
+            {{-- Task Project Error --}}
+            @error('newTaskProject')
+            <p class="bg-red-400 text-white p-2 font-bold">{{ $message }}</p>
+            @enderror
+            {{-- /Task Project Error --}}
+            {{-- Task Priority Error --}}
+            @error('newTaskPriority')
+            <p class="bg-red-400 text-white p-2 font-bold">{{ $message }}</p>
+            @enderror
+            {{-- /Task Priority Error --}}
             {{-- Create Task Button --}}
             <button
                 class="bg-gray-500 hover:bg-gray-600 border-gray-500 hover:border-gray-600 hover:cursor-pointer text-sm border-4 text-white font-bold py-1 px-2 rounded"
@@ -40,12 +60,13 @@
             {{-- /Create Task Button --}}
         </div>
     </form>
+    {{-- Task List --}}
     <section class="mt-4 py-4 rounded-lg">
         <div class="flex justify-between items-center w-full pb-4">
             <h1 class="font-white font-bold text-lg px-4 border-b border-gray-700">Your Task List</h1>
             {{-- Projects Filter --}}
-            @if(count($projects) > 1)
-            <select class="px-4" wire:model='filterProject'>
+            @if($projects->count())
+            <select class="px-4 bg-gray-700" wire:model='filterProject'>
                 @foreach($projects as $project)
                     <option value="{{ $project }}">{{ $project }}</option>
                 @endforeach
@@ -54,11 +75,12 @@
             {{-- /Projects Filter --}}
         </div>
         {{-- Task List --}}
-        @if (count($tasks))
+        @if ($tasks->count())
         <ul class="flex flex-col gap-1">
             @foreach($tasks as $task)
             <li class="bg-gray-800 w-full block">
                 <div class="flex items-center p-4 gap-4">
+                    <span class="text-xs w-4">#{{ $task->priority }}</span>
                     <input
                         type="checkbox"
                         class="h-4 w-4 border-gray-300 rounded"
@@ -70,6 +92,7 @@
                         <span class="text-lg font-medium">{{ $task->body }}</span>
                         <span class="text-md font-light text-gray-500">{{ $task->project }}</span>
                     </label>
+                    <span class="text-xs font-light text-center">{{ $task->created_at->diffForHumans() }}</span>
 
                     <button class="text-red-500 hover:cursor-pointer" wire:click='deleteTask'>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -92,5 +115,6 @@
         </div>
         @endif
     </section>
+    {{-- /Task List --}}
 </div>
 </div>
