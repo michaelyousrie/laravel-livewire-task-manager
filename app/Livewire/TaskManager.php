@@ -13,7 +13,7 @@ class TaskManager extends Component
 
     public array $tasks = [];
     public array $projects = [
-        'all' => 'All Projects'
+       'All Projects'
     ];
 
     public function addTask()

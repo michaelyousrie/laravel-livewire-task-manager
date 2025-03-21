@@ -31,16 +31,19 @@
                 >
                 {{-- /Task Priority --}}
             </div>
+            {{-- Create Task Button --}}
             <button
                 class="bg-gray-500 hover:bg-gray-600 border-gray-500 hover:border-gray-600 hover:cursor-pointer text-sm border-4 text-white font-bold py-1 px-2 rounded"
             >
                 Create Task
             </button>
+            {{-- /Create Task Button --}}
         </div>
     </form>
     <section class="mt-4 py-4 rounded-lg">
         <div class="flex justify-between items-center w-full pb-4">
             <h1 class="font-white font-bold text-lg px-4 border-b border-gray-700">Your Task List</h1>
+            {{-- Projects Filter --}}
             @if(count($projects) > 1)
             <select class="px-4" wire:model='filterProject'>
                 @foreach($projects as $project)
@@ -48,7 +51,9 @@
                 @endforeach
             </select>
             @endif
+            {{-- /Projects Filter --}}
         </div>
+        {{-- Task List --}}
         @if (count($tasks))
         <ul class="flex flex-col gap-1">
             @foreach($tasks as $task)
@@ -57,13 +62,13 @@
                     <input
                         type="checkbox"
                         class="h-4 w-4 border-gray-300 rounded"
-                        id="todo1"
-                        name="todo1"
+                        id="{{ $task->id }}"
+                        name="{{ $task->id }}"
                         wire:change='toggleTask'
                     >
-                    <label for="todo1" class="ml-3 text-gray-200 flex justify-between w-full">
-                        <span class="text-lg font-medium">Finish project proposal</span>
-                        <span class="text-md font-light text-gray-500">Test</span>
+                    <label for="{{ $task->id }}" class="ml-3 text-gray-200 flex justify-between w-full">
+                        <span class="text-lg font-medium">{{ $task->body }}</span>
+                        <span class="text-md font-light text-gray-500">{{ $task->project }}</span>
                     </label>
 
                     <button class="text-red-500 hover:cursor-pointer" wire:click='deleteTask'>
@@ -75,6 +80,7 @@
             </li>
             @endforeach
         </ul>
+        {{-- /Task List --}}
         @else
         <div class="w-full text-center">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12 inline">
