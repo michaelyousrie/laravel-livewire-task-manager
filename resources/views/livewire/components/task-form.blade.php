@@ -1,7 +1,7 @@
 {{-- Task Form --}}
 <form class="w-full mx-auto py-4 mt-4" wire:submit.prevent='addUpdateTask'>
     <div class="px-4 py-2">
-        <h1 class="font-bold text-lg">Create a new task</h1>
+        <h1 class="font-bold text-lg">{{ $currentlyUpdatingTask ? 'Update Task' : 'Create a new task' }}</h1>
     </div>
 
     <div class="flex flex-col border border-gray-500 bg-gray-800 rounded-lg p-4 gap-4">
