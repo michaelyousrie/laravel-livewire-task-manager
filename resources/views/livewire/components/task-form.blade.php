@@ -24,7 +24,7 @@
             {{-- Task Priority --}}
             <input
                 class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:outline-0"
-                type="number" placeholder="Priority..(optional)" wire:model='newTaskPriority' tabindex="3" min="1">
+                type="number" placeholder="Priority.. (optional)" wire:model='newTaskPriority' tabindex="3" min="1">
             {{-- /Task Priority --}}
         </div>
         {{-- Task Project Error --}}

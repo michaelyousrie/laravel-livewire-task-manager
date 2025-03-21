@@ -40,13 +40,7 @@ class TaskManager extends Component
         $this->validateTask();
 
         if ($this->newTaskPriority) {
-            // update the priority of all tasks that have the same or higher priority than the entered priority to their current priority +1
-            // basically, shift priorities by 1 to make space for the new task item.
-            foreach(Task::query()->where('priority', '>=', $this->newTaskPriority)->get() as $sameOrHigherPriorityTask) {
-                $sameOrHigherPriorityTask->update([
-                    'priority' => $sameOrHigherPriorityTask->priority + 1
-                ]);
-            }
+            $this->shiftTaskPriority();
         } else {
             $this->newTaskPriority = (Task::query()->orderBy('priority', 'desc')->first()->priority ?? 0) + 1;
         }
@@ -94,15 +88,19 @@ class TaskManager extends Component
 
         $this->newTask = $task->body;
         $this->newTaskProject = $task->project;
+        $this->newTaskPriority = $task->priority;
     }
 
     public function handleUpdateTask()
     {
         $task = Task::query()->find($this->currentlyUpdatingTask);
 
+        $this->shiftTaskPriority();
+
         $task->update([
             'body' => $this->newTask,
             'project' => $this->newTaskProject,
+            'priority' => $this->newTaskPriority
         ]);
 
         $this->resetForm();
@@ -171,5 +169,16 @@ class TaskManager extends Component
             'newTaskProject' => ['required'],
             'newTaskPriority' => ['numeric', 'min:1', 'max:1264']
         ]);
+    }
+
+    private function shiftTaskPriority()
+    {
+        // update the priority of all tasks that have the same or higher priority than the entered priority to their current priority +1
+        // basically, shift priorities by 1 to make space for the new task item.
+        foreach(Task::query()->where('priority', '>=', $this->newTaskPriority)->get() as $sameOrHigherPriorityTask) {
+            $sameOrHigherPriorityTask->update([
+                'priority' => $sameOrHigherPriorityTask->priority + 1
+            ]);
+        }
     }
 }
