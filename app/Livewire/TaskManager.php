@@ -10,6 +10,7 @@ class TaskManager extends Component
 {
     public string $newTask = '';
     public string $newTaskProject = '';
+    public ?int $newTaskPriority = null;
 
     public string $filterProjectName = 'All Projects';
     public string $filterTaskStatus = 'all';
@@ -38,13 +39,23 @@ class TaskManager extends Component
 
         $this->validateTask();
 
-        $lowestPriority = Task::query()->orderBy('priority', 'desc')->first('priority')->priority ?? 0;
+        if ($this->newTaskPriority) {
+            // update the priority of all tasks that have the same or higher priority than the entered priority to their current priority +1
+            // basically, shift priorities by 1 to make space for the new task item.
+            foreach(Task::query()->where('priority', '>=', $this->newTaskPriority)->get() as $sameOrHigherPriorityTask) {
+                $sameOrHigherPriorityTask->update([
+                    'priority' => $sameOrHigherPriorityTask->priority + 1
+                ]);
+            }
+        } else {
+            $this->newTaskPriority = (Task::query()->orderBy('priority', 'desc')->first()->priority ?? 0) + 1;
+        }
 
         Task::query()
             ->create([
                 'body'      => $this->newTask,
                 'project'   => $this->newTaskProject,
-                'priority'  => $lowestPriority + 1
+                'priority'  => $this->newTaskPriority
             ]);
 
         $this->resetForm();
@@ -124,6 +135,7 @@ class TaskManager extends Component
     {
         $this->newTask = '';
         $this->newTaskProject = '';
+        $this->newTaskPriority = null;
     }
 
     private function fetchProjects()
@@ -157,6 +169,7 @@ class TaskManager extends Component
         $this->validate([
             'newTask' => ['required', 'unique:tasks,body','max:300'],
             'newTaskProject' => ['required'],
+            'newTaskPriority' => ['numeric', 'min:1', 'max:1264']
         ]);
     }
 }
