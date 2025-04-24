@@ -26,7 +26,7 @@
     @if ($tasks->count())
         <ul class="flex flex-col gap-1 w-full" wire:sortable="updateTaskListPriority">
             @foreach ($tasks as $task)
-                <li class="{{ $task->is_done ? 'bg-gray-800' : 'bg-gray-900' }}"
+                <li class="{{ $task->isDone() ? 'bg-gray-800' : 'bg-gray-900' }}"
                     wire:sortable.item="{{ $task->id }}" wire:key="task-{{ $task->id }}"
                 >
                     <div class="flex items-center p-4 gap-2 max-w-full text-wrap">
@@ -40,7 +40,7 @@
                         {{-- /Task ID --}}
                         <div class="flex-1 flex gap-1 items-center">
                             {{-- Task Body --}}
-                            <p class="text-gray-200 text-lg font-medium break-all {{ $task->is_done ? 'line-through text-gray-600' : '' }}">{{ $task->body }}</p>
+                            <p class="text-gray-200 text-lg font-medium break-all {{ $task->isDone() ? 'line-through text-gray-600' : '' }}">{{ $task->body }}</p>
                             {{-- /Task Body --}}
                             {{-- Task Project --}}
                             <p class="text-xs font-bold text-gray-500">({{ $task->project }})</p>
@@ -48,11 +48,11 @@
                         </div>
                         {{-- Task Status --}}
                         <button
-                            class="{{ $task->is_done ? 'text-red-500' : 'text-green-500' }} hover:cursor-pointer"
+                            class="{{ $task->isDone() ? 'text-red-500' : 'text-green-500' }} hover:cursor-pointer"
                             wire:click='toggleTask({{ $task->id }})'
-                            title="{{ $task->is_done ? 'Mark as Incomplete' : 'Mark as Complete' }}"
+                            title="{{ $task->isDone() ? 'Mark as Incomplete' : 'Mark as Complete' }}"
                         >
-                            @if ($task->is_done)
+                            @if ($task->isDone())
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="size-4">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -71,10 +71,10 @@
                         {{-- /Task Status --}}
                         {{-- Task Update --}}
                         <button
-                            class="{{ $task->is_done ? 'text-yellow-800 hover:cursor-not-allowed' : 'text-yellow-500 hover:cursor-pointer' }}"
+                            class="{{ $task->isDone() ? 'text-yellow-800 hover:cursor-not-allowed' : 'text-yellow-500 hover:cursor-pointer' }}"
                             wire:click='updateTask({{ $task->id }})'
-                            @if ($task->is_done) title="You can't update a completed task!" @endif
-                            {{ $task->is_done ? 'disabled' : '' }}>
+                            @if ($task->isDone()) title="You can't update a completed task!" @endif
+                            {{ $task->isDone() ? 'disabled' : '' }}>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="size-4">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -104,7 +104,7 @@
                         </span>
                         {{-- /Task Created At Human Form --}}
                         {{-- Task Updated At Human Form --}}
-                        @if ($task->is_done)
+                        @if ($task->isDone())
                             <span class="text-xs font-light text-center flex gap-1" title="Done {{ $task->done_at->diffForHumans() }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 text-green-600">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />

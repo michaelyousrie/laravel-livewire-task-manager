@@ -63,8 +63,7 @@ class TaskManager extends Component
     {
         $task = Task::query()->find($taskId);
         $task->update([
-            'is_done' => !$task->is_done,
-            'done_at' => now()
+            'done_at' => (!$task->done_at ? now() : null) // if the task is being toggled as undone, make the task's done_at = null.
         ]);
 
         $this->fetchTasks();
@@ -156,7 +155,9 @@ class TaskManager extends Component
         }
 
         if ($this->filterTaskStatus !== 'all') {
-            $query->where('is_done', ($this->filterTaskStatus == 'complete' ? true : false));
+            // if the filter is complete, set the query = (where 'done_at' != null)
+            // else, set the query = (where 'done_at' = null);
+            $query->where('done_at', ($this->filterTaskStatus == 'complete' ? "!=" : "="), null);
         }
 
         $this->tasks = $query->orderBy('priority')->get();
